@@ -1,14 +1,30 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 public class Agencia {
-    private List<Agente> agentes;
-    private List<Cliente> clientes;
+    private List<Persona> personas;
 
     public Agencia() {
-        this.agentes = new ArrayList<>();
-        this.clientes = new ArrayList<>();
+        this.personas = new ArrayList<>();
+    }
+
+    public void agregarPersona(Persona persona) {
+        personas.add(persona);
+        System.out.println("Persona agregada correctamente.");
+    }
+
+    public void buscarPorIdentificacion(String identificacion) {
+        boolean encontrado = false;
+        for (Persona persona : personas) {
+            if (persona.getIdentificacion().equals(identificacion)) {
+                persona.mostrarInformacion();
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            System.out.println("No se encontro ninguna persona con la identificacion proporcionada.");
+        }
     }
 
     public void ejecutarPrograma() {
@@ -56,7 +72,7 @@ public class Agencia {
                     System.out.println("Hasta luego!");
                     break;
                 default:
-                    System.out.println("Opcion invalida. Por favor, ingrese una opcion valida.");
+                    System.out.println("Opcion invalida. Intente nuevamente.");
                     break;
             }
         }
@@ -67,68 +83,45 @@ public class Agencia {
     public void agregarAgente() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Ingrese el nombre del agente:");
+        System.out.println("Ingrese el nombre del agente: ");
         String nombre = scanner.nextLine();
 
-        System.out.println("Ingrese el apellido del agente:");
+        System.out.println("Ingrese el apellido del agente: ");
         String apellido = scanner.nextLine();
 
-        String identificacion = obtenerIdentificacionUnica("agente");
+        System.out.println("Ingrese la identificacion del agente: ");
+        String identificacion = scanner.nextLine();
 
-        System.out.println("Ingrese el codigo del agente:");
-        String codigoAgente = scanner.nextLine();
-
-        Agente agente = new Agente(nombre, apellido, identificacion, codigoAgente);
-        agentes.add(agente);
-
-        System.out.println("Agente agregado correctamente.");
+        Agente agente = new Agente(nombre, apellido, identificacion);
+        agregarPersona(agente);
     }
 
     public void buscarAgentePorIdentificacion() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Ingrese la identificacion del agente a buscar:");
+        System.out.println("Ingrese la identificacion del agente a buscar: ");
         String identificacion = scanner.nextLine();
 
-        Agente agenteEncontrado = null;
-
-        for (Agente agente : agentes) {
-            if (agente.getIdentificacion().equals(identificacion)) {
-                agenteEncontrado = agente;
-                break;
-            }
-        }
-
-        if (agenteEncontrado != null) {
-            System.out.println("Agente encontrado:");
-            System.out.println("Nombre: " + agenteEncontrado.getNombre());
-            System.out.println("Apellido: " + agenteEncontrado.getApellido());
-            System.out.println("Identificacion: " + agenteEncontrado.getIdentificacion());
-            System.out.println("Codigo del Agente: " + agenteEncontrado.getCodigoAgente());
-        } else {
-            System.out.println("No se encontro ningun agente con esa identificacion.");
-        }
+        buscarPorIdentificacion(identificacion);
     }
 
     public void eliminarAgentePorIdentificacion() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Ingrese la identificacion del agente a eliminar:");
+        System.out.println("Ingrese la identificacion del agente a eliminar: ");
         String identificacion = scanner.nextLine();
 
-        Agente agenteEncontrado = null;
-
-        for (Agente agente : agentes) {
-            if (agente.getIdentificacion().equals(identificacion)) {
-                agenteEncontrado = agente;
+        boolean encontrado = false;
+        for (Persona persona : personas) {
+            if (persona instanceof Agente && persona.getIdentificacion().equals(identificacion)) {
+                personas.remove(persona);
+                encontrado = true;
+                System.out.println("Agente eliminado correctamente.");
                 break;
             }
         }
 
-        if (agenteEncontrado != null) {
-            agentes.remove(agenteEncontrado);
-            System.out.println("Agente eliminado correctamente.");
-        } else {
+        if (!encontrado) {
             System.out.println("No se encontro ningun agente con esa identificacion.");
         }
     }
@@ -136,116 +129,61 @@ public class Agencia {
     public void agregarCliente() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Ingrese el nombre del cliente:");
+        System.out.println("Ingrese el nombre del cliente: ");
         String nombre = scanner.nextLine();
 
-        System.out.println("Ingrese el apellido del cliente:");
+        System.out.println("Ingrese el apellido del cliente: ");
         String apellido = scanner.nextLine();
 
-        String identificacion = obtenerIdentificacionUnica("cliente");
+        System.out.println("Ingrese la identificacion del cliente: ");
+        String identificacion = scanner.nextLine();
 
-        System.out.println("Ingrese el origen del cliente:");
+        System.out.println("Ingrese el origen del cliente: ");
         String origenCliente = scanner.nextLine();
 
-        System.out.println("Ingrese el destino del cliente:");
+        System.out.println("Ingrese el destino del cliente: ");
         String destinoCliente = scanner.nextLine();
 
         Cliente cliente = new Cliente(nombre, apellido, identificacion, origenCliente, destinoCliente);
-        clientes.add(cliente);
-
-        System.out.println("Cliente agregado correctamente.");
+        agregarPersona(cliente);
     }
 
     public void buscarClientePorIdentificacion() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Ingrese la identificacion del cliente a buscar:");
+        System.out.println("Ingrese la identificacion del cliente a buscar: ");
         String identificacion = scanner.nextLine();
 
-        Cliente clienteEncontrado = null;
-
-        for (Cliente cliente : clientes) {
-            if (cliente.getIdentificacion().equals(identificacion)) {
-                clienteEncontrado = cliente;
-                break;
-            }
-        }
-
-        if (clienteEncontrado != null) {
-            System.out.println("Cliente encontrado:");
-            System.out.println("Nombre: " + clienteEncontrado.getNombre());
-            System.out.println("Apellido: " + clienteEncontrado.getApellido());
-            System.out.println("Identificacion: " + clienteEncontrado.getIdentificacion());
-            System.out.println("Origen del Cliente: " + clienteEncontrado.getOrigenCliente());
-            System.out.println("Destino del Cliente: " + clienteEncontrado.getDestinoCliente());
-        } else {
-            System.out.println("No se encontro ningun cliente con esa identificacion.");
-        }
+        buscarPorIdentificacion(identificacion);
     }
 
     public void generarVenta() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Ingrese la identificacion del cliente:");
+        System.out.println("Ingrese la identificacion del cliente: ");
         String identificacionCliente = scanner.nextLine();
 
         Cliente clienteEncontrado = null;
-
-        for (Cliente cliente : clientes) {
-            if (cliente.getIdentificacion().equals(identificacionCliente)) {
-                clienteEncontrado = cliente;
+        for (Persona persona : personas) {
+            if (persona instanceof Cliente && persona.getIdentificacion().equals(identificacionCliente)) {
+                clienteEncontrado = (Cliente) persona;
                 break;
             }
         }
 
         if (clienteEncontrado != null) {
-            System.out.println("Venta realizada al cliente:");
-            System.out.println("Nombre: " + clienteEncontrado.getNombre());
-            System.out.println("Apellido: " + clienteEncontrado.getApellido());
-            System.out.println("Identificación: " + clienteEncontrado.getIdentificacion());
+            System.out.println("Identificacion: " + clienteEncontrado.getIdentificacion());
             System.out.println("Origen del Cliente: " + clienteEncontrado.getOrigenCliente());
             System.out.println("Destino del Cliente: " + clienteEncontrado.getDestinoCliente());
             System.out.println("Pasaje de avion vendido correctamente!");
         } else {
             System.out.println("No se encontro ningun cliente con esa identificacion.");
         }
-        return;
     }
 
-    private String obtenerIdentificacionUnica(String tipo) {
-        Scanner scanner = new Scanner(System.in);
-        String identificacion;
-
-        while (true) {
-            System.out.println("Ingrese la identificacion del " + tipo + ":");
-            identificacion = scanner.nextLine();
-
-            boolean identificacionExistente = false;
-
-            if (tipo.equalsIgnoreCase("agente")) {
-                for (Agente agente : agentes) {
-                    if (agente.getIdentificacion().equals(identificacion)) {
-                        identificacionExistente = true;
-                        break;
-                    }
-                }
-            } else if (tipo.equalsIgnoreCase("cliente")) {
-                for (Cliente cliente : clientes) {
-                    if (cliente.getIdentificacion().equals(identificacion)) {
-                        identificacionExistente = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!identificacionExistente) {
-                break;
-            }
-
-            System.out.println("La identificacion ingresada ya existe. Por favor, ingrese una identificacion unica.");
-        }
-
-        return identificacion;
+    public static void main(String[] args) {
+        Agencia agencia = new Agencia();
+        agencia.ejecutarPrograma();
     }
 }
 

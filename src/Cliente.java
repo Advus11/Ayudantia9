@@ -1,4 +1,4 @@
-public class Cliente extends Persona {
+class Cliente extends Persona {
     private String origenCliente;
     private String destinoCliente;
 
@@ -12,15 +12,13 @@ public class Cliente extends Persona {
         return origenCliente;
     }
 
-    public void setOrigenCliente(String origenCliente) {
-        this.origenCliente = origenCliente;
-    }
-
     public String getDestinoCliente() {
         return destinoCliente;
     }
 
-    public void setDestinoCliente(String destinoCliente) {
-        this.destinoCliente = destinoCliente;
+    @Override
+    public void mostrarInformacion() {
+        System.out.println("Cliente: " + nombre + " " + apellido + " - Identificacion: " + identificacion
+                + " - Origen: " + origenCliente + " - Destino: " + destinoCliente);
     }
 }

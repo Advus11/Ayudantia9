@@ -1,16 +1,10 @@
-public class Agente extends Persona {
-    private String codigoAgente;
-
-    public Agente(String nombre, String apellido, String identificacion, String codigoAgente) {
+class Agente extends Persona {
+    public Agente(String nombre, String apellido, String identificacion) {
         super(nombre, apellido, identificacion);
-        this.codigoAgente = codigoAgente;
     }
 
-    public String getCodigoAgente() {
-        return codigoAgente;
-    }
-
-    public void setCodigoAgente(String codigoAgente) {
-        this.codigoAgente = codigoAgente;
+    @Override
+    public void mostrarInformacion() {
+        System.out.println("Agente: " + nombre + " " + apellido + " - Identificacion: " + identificacion);
     }
 }
